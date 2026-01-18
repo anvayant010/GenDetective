@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GenDetective: AI Content Detector</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+  :root {
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --primary-soft: #d1fae5;
+    --bg-soft: #ecfdf5;
+    --accent: #22c55e;
+    --danger: #ef4444;
+    --neutral: #64748b;
+    --card-radius: 26px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 20px;
+    width: 600px;             
+    height: 530px;              
+    font-family: "Inter", system-ui, sans-serif;
+    background: radial-gradient(circle at top left, #bbf7d0, #ecfdf5 60%);
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: var(--card-radius);
+    padding: 30px 28px;
+    box-shadow: 0 24px 50px rgba(16, 185, 129, 0.18);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    left: -40px;
+    top: 180px;
+    width: 56px;
+    height: 140px;
+    border-radius: 0 55px 55px 0;
+    border: 2px dashed rgba(16, 185, 129, 0.25);
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  h1 {
+    margin: 0 0 4px;
+    font-size: 24px;
+    font-weight: 800;
+    color: #064e3b;
+  }
+
+  .subtitle {
+    margin: 0 0 20px;
+    color: var(--neutral);
+    font-size: 15px;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      rgba(148, 163, 184, 0.1),
+      rgba(148, 163, 184, 0.4),
+      rgba(148, 163, 184, 0.1)
+    );
+    margin-bottom: 22px;
+  }
+
+  .mode-toggle {
+    display: inline-flex;
+    background: #ecfdf5;
+    padding: 5px;
+    border-radius: 999px;
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.28);
+    margin-bottom: 26px;
+  }
+
+  .mode-btn {
+    border: none;
+    background: transparent;
+    padding: 10px 26px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 15px;
+    color: #064e3b;
+    cursor: pointer;
+    transition: all 0.18s ease-out;
+  }
+
+  .mode-btn.active {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #ffffff;
+    box-shadow: 0 12px 28px rgba(16, 185, 129, 0.45);
+  }
+
+  .panel {
+    display: none;
+  }
+  .panel.active {
+    display: block;
+  }
+
+  .upload-area {
+     margin-top: 6px;
+    padding: 16px 8px;
+    border-radius: 18px;
+    border: 2px dashed rgba(16, 185, 129, 0.45);
+    background: var(--bg-soft);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    justify-content: center; 
+  }
+
+  .upload-area:hover {
+    background: #d1fae5;
+  }
+
+  .upload-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;    
+    justify-content: center; 
+    margin-bottom: 12px;
+    background: white;
+    box-shadow: 0 10px 22px rgba(16, 185, 129, 0.25);
+    font-size: 28px;
+  }
+  .upload-icon img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+}
+
+  .upload-title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #022c22;
+  }
+
+  .upload-subtext {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 2px;
+  }
+
+  img, video {
+    display: block;
+    max-width: 100%;
+    max-height: 240px;
+    border-radius: 14px;
+    margin: 14px auto 0;
+    box-shadow: 0 12px 26px rgba(15, 118, 110, 0.12);
+  }
+
+  .text-input, .url-input {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid #d1d5db;
+    padding: 12px 14px;
+    font-size: 14px;
+    margin-top: 14px;
+    outline: none;
+    transition: all 0.18s ease;
+  }
+
+  .text-input:focus, .url-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.5);
+  }
+
+  .text-input {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  /* Analyze button */
+  .analyze-btn {
+    width: 100%;
+    margin-top: 26px;
+    border: none;
+    border-radius: 999px;
+    padding: 16px;
+    font-weight: 800;
+    font-size: 18px;
+    color: white;
+    background: linear-gradient(to right, #22c55e, #0284c7);
+    cursor: pointer;
+    box-shadow: 0 20px 42px rgba(34, 197, 94, 0.45);
+    transition: all 0.18s ease-out;
+  }
+
+  .analyze-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  .loader-wrap {
+    display: none;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .loader-dot {
+    width: 5px;
+    height: 5px;
+    background: white;
+    border-radius: 50%;
+    animation: pulse 0.9s infinite ease-in-out;
+  }
+
+  .loader-dot:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+  .loader-dot:nth-child(3) {
+    animation-delay: 0.24s;
+  }
+
+  @keyframes pulse {
+    0%,100% { transform: scale(0.4); opacity: 0.5; }
+    50%    { transform: scale(1); opacity: 1; }
+  }
+
+  .result-box {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 16px;
+    background: #f9fafb;
+    border-left: 5px solid var(--primary);
+  }
+
+  .result-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .result-line {
+    font-size: 14px;
+    margin: 2px 0;
+  }
+
+  .error {
+    margin-top: 12px;
+    color: #b91c1c;
+    font-weight: 600;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>GenDetective: AI Content Detector</h1>
+    <p class="subtitle">
+      Quickly check if your images, videos or text look AI generated.
+    </p>
+    <div class="divider"></div>
+
+    <!-- MODE TOGGLE -->
+    <div class="mode-toggle">
+      <button class="mode-btn active" data-mode="image">Image</button>
+      <button class="mode-btn" data-mode="video">Video</button>
+      <button class="mode-btn" data-mode="text">Text</button>
+    </div>
+
+    <!-- IMAGE PANEL -->
+    <div id="panel-image" class="panel active">
+      <label class="upload-area" id="image-upload-area">
+        <div class="upload-icon">
+        📷
+        </div>
+        <div class="upload-title">Upload Image</div>
+        <div class="upload-subtext">JPEG · PNG · WEBP up to ~20MB</div>
+        <input type="file" id="image-input" accept="image/*" hidden />
+      </label>
+      <img id="image-preview" style="display: none" />
+    </div>
+
+    <!-- VIDEO PANEL -->
+    <div id="panel-video" class="panel">
+      <label class="upload-area" id="video-upload-area">
+        <div class="upload-icon">
+          🎬
+        </div>
+        <div class="upload-title">Upload Video</div>
+        <div class="upload-subtext">MP4 · WEBM — short clips recommended</div>
+        <input type="file" id="video-input" accept="video/*" hidden />
+      </label>
+      <br>
+
+      <input
+        id="video-url"
+        type="text"
+        class="url-input"
+        placeholder="Or paste a video URL (e.g., YouTube or MP4 link)…"
+      />
+
+      <video id="video-preview" controls style="display: none"></video>
+    </div>
+
+    <!-- TEXT PANEL -->
+    <div id="panel-text" class="panel">
+      <textarea
+        id="text-input"
+        class="text-input"
+        placeholder="Paste or type the text you want to check…"
+      ></textarea>
+    </div>
+
+    <div class="analyze-row">
+      <button id="analyze-btn" class="analyze-btn">
+        <span id="analyze-label">Analyze</span>
+        <div id="loader" class="loader-wrap">
+          <div class="loader-dot"></div>
+          <div class="loader-dot"></div>
+          <div class="loader-dot"></div>
+        </div>
+      </button>
+    </div>
+
+    <div id="result" class="result-box" style="display: none"></div>
+    <div id="error" class="error"></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
