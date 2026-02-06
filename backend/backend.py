@@ -16,6 +16,9 @@ from pydantic import BaseModel, Field
 from PIL import Image
 from scipy.stats import entropy
 
+from transformers import CLIPProcessor, CLIPModel
+import torch
+
 try:
     import cv2
     HAS_CV2 = True
@@ -29,6 +32,15 @@ from joblib import load as joblib_load
 import types as pytypes
 
 # CONFIG & INIT
+
+print("Loading CLIP semantic detector...")
+try:
+    CLIP_MODEL = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+    CLIP_PROCESSOR = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+    print("CLIP detector loaded.")
+except Exception as e:
+    print("CLIP load failed:", e)
+    CLIP_MODEL = None
 
 load_dotenv()
 API_KEY = os.getenv("GEMINI_API_KEY")
@@ -84,7 +96,7 @@ def normalize01(x, lo, hi):
         return 0.0
     return min(1.0, max(0.0, (x - lo) / (hi - lo)))
 
-# ENHANCED IMAGE FORENSICS (same features, milder interpretation)
+# ENHANCED IMAGE FORENSICS 
 
 def analyze_frequency_spectrum(gray_arr: np.ndarray) -> Dict[str, float]:
     f = np.fft.fft2(gray_arr)
@@ -232,7 +244,6 @@ def extract_image_forensics_enhanced(pil_image: Image.Image) -> Dict[str, Any]:
         except Exception:
             feats["camera_info"] = "present"
 
-    # Arrays
     if pil_image.mode not in ("RGB", "RGBA"):
         rgb = pil_image.convert("RGB")
     else:
@@ -339,7 +350,79 @@ def image_heuristic_score_enhanced(feats: Dict[str, Any]) -> Tuple[float, List[s
     score = max(0.0, min(60.0, score))
     return score, factors
 
-# ENHANCED VIDEO FORENSICS (also conservative)
+def clip_ai_probability(pil_img: Image.Image) -> float:
+    if CLIP_MODEL is None:
+        return None
+
+    prompts = [
+        "a real photograph",
+        "a DSLR photo",
+        "AI generated image",
+        "digital artwork",
+        "synthetic image",
+        "computer generated render"
+    ]
+
+    inputs = CLIP_PROCESSOR(
+        text=prompts,
+        images=pil_img,
+        return_tensors="pt",
+        padding=True,
+    )
+
+    with torch.no_grad():
+        outputs = CLIP_MODEL(**inputs)
+        logits = outputs.logits_per_image
+        probs = logits.softmax(dim=1).numpy()[0]
+
+    real_score = probs[0] + probs[1]
+    ai_score = probs[2] + probs[3] + probs[4] + probs[5]
+
+    return float(ai_score * 100)
+
+def camera_realism_score(feats: Dict[str, Any]) -> Tuple[float, List[str]]:
+    """
+    Estimates how strongly an image resembles a real camera capture.
+    Returns score (0–30) and explanatory factors.
+    """
+    score = 0.0
+    factors = []
+
+    noise_std = feats.get("noise_std", 0.0)
+    sharpness = feats.get("sharpness_var", 0.0)
+    brightness_std = feats.get("brightness_std", 0.0)
+    edge_consistency = feats.get("edge_consistency", 0.5)
+
+    # Natural sensor noise
+    if 2.0 < noise_std < 12.0:
+        score += 8
+        factors.append("Noise pattern resembles camera sensor noise")
+
+    # Natural sharpness variation
+    if 60 < sharpness < 800:
+        score += 6
+        factors.append("Sharpness variance consistent with optical capture")
+
+    # Lighting variation
+    if brightness_std > 0.08:
+        score += 5
+        factors.append("Natural brightness variation detected")
+
+    # Edge realism
+    if 0.2 < edge_consistency < 0.7:
+        score += 6
+        factors.append("Edge distribution resembles real-world optics")
+
+    # Channel variance
+    ch_std = feats.get("channel_stds", [0, 0, 0])
+    if np.mean(ch_std) > 0.15:
+        score += 5
+        factors.append("Color channel variance consistent with photography")
+
+    return score, factors
+
+
+# ENHANCED VIDEO FORENSICS 
 
 def analyze_temporal_consistency(frames: List[np.ndarray]) -> Dict[str, float]:
     if len(frames) < 3:
@@ -655,7 +738,6 @@ def ensemble_decision_enhanced(
 
     heuristic_scaled = min(100.0, heuristic_score * (100.0 / 60.0)) if heuristic_score > 0 else 0.0
 
-    # 80% Gemini, 20% heuristics
     final_conf = int(round(gem_conf * 0.8 + heuristic_scaled * 0.2))
     final_conf = max(0, min(100, final_conf))
 
@@ -690,6 +772,21 @@ def call_gemini_image_enhanced(image_bytes: bytes, mime_type: str) -> DetectionR
     pil_img = Image.open(io.BytesIO(image_bytes))
     feats = extract_image_forensics_enhanced(pil_img)
     heuristic_score, heuristic_factors = image_heuristic_score_enhanced(feats)
+    clip_score = clip_ai_probability(pil_img)
+
+    # CLIP INFLUENCE 
+    if clip_score is not None:
+        clip_contribution = (clip_score / 100.0) * 15.0
+        heuristic_score += clip_contribution
+        heuristic_factors.append(
+            f"CLIP semantic AI likelihood: {clip_score:.1f}%"
+        )
+
+    realism_score, realism_factors = camera_realism_score(feats)
+
+    heuristic_score -= realism_score * 0.6
+    heuristic_score = max(0.0, heuristic_score)
+    heuristic_factors.extend(realism_factors)
 
     feat_lines = [
         f"Dimensions: {feats.get('dimensions')} (AR: {feats.get('aspect_ratio')})",
