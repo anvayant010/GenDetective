@@ -449,6 +449,38 @@ def analyze_temporal_consistency(frames: List[np.ndarray]) -> Dict[str, float]:
         "avg_frame_difference": float(np.mean(brightness_jumps)) if brightness_jumps else 0.0,
     }
 
+def analyze_temporal_flicker(frames: List[np.ndarray]) -> Dict[str, float]:
+    """
+    Detects flicker across frames using noise and sharpness stability.
+    Strong signal for AI-generated videos.
+    """
+    if len(frames) < 3:
+        return {}
+
+    noise_levels = []
+    sharpness_levels = []
+
+    for f in frames:
+        img = (f * 255).astype("uint8")
+
+        if HAS_CV2:
+            lap = cv2.Laplacian(img, cv2.CV_64F)
+            sharpness_levels.append(float(lap.var()))
+
+            blurred = cv2.GaussianBlur(img, (5, 5), 0)
+            noise = img.astype("float32") - blurred.astype("float32")
+            noise_levels.append(float(np.std(noise)))
+
+    if not noise_levels:
+        return {}
+
+    return {
+        "temporal_noise_variance": float(np.var(noise_levels)),
+        "temporal_sharpness_variance": float(np.var(sharpness_levels)),
+        "avg_noise_level": float(np.mean(noise_levels)),
+    }
+
+
 def analyze_face_artifacts(face_regions: List[np.ndarray]) -> Dict[str, float]:
     if not face_regions or not HAS_CV2:
         return {}
@@ -554,6 +586,7 @@ def extract_video_features_enhanced(path: str) -> Dict[str, Any]:
     cap.release()
 
     feats.update(analyze_temporal_consistency(sampled_frames))
+    feats.update(analyze_temporal_flicker(sampled_frames))
     feats.update(analyze_face_artifacts(face_regions))
 
     feats["sampled_frames"] = len(idxs)
@@ -628,8 +661,61 @@ def video_heuristic_score_enhanced(feats: Dict[str, Any]) -> Tuple[float, List[s
         score += 8
         factors.append("Very small frame-to-frame change (could be static or generated content)")
 
+    noise_var = feats.get("temporal_noise_variance", 0.0)
+    if noise_var > 2.0:
+        score += 8
+    factors.append("Temporal noise flicker detected across frames")
+
+    sharp_var = feats.get("temporal_sharpness_variance", 0.0)
+    if sharp_var > 500:
+        score += 8
+    factors.append("Sharpness fluctuates across frames (render instability)")
+
+
     score = max(0.0, min(60.0, score))
     return score, factors
+
+
+def clip_video_ai_probability(path: str) -> float:
+    """
+    Computes AI probability across sampled video frames using CLIP.
+    Returns percentage (0–100).
+    """
+    if CLIP_MODEL is None or not HAS_CV2:
+        return None
+
+    cap = cv2.VideoCapture(path)
+    if not cap.isOpened():
+        return None
+
+    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
+    if frame_count == 0:
+        cap.release()
+        return None
+
+    # sample up to 12 frames evenly
+    sample_indices = np.linspace(0, frame_count - 1, min(12, frame_count), dtype=int)
+
+    scores = []
+
+    for idx in sample_indices:
+        cap.set(cv2.CAP_PROP_POS_FRAMES, int(idx))
+        ret, frame = cap.read()
+        if not ret:
+            continue
+
+        pil_img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        s = clip_ai_probability(pil_img)
+        if s is not None:
+            scores.append(s)
+
+    cap.release()
+
+    if not scores:
+        return None
+
+    return float(np.mean(scores))
+
 
 # PROMPTS
 
@@ -852,6 +938,15 @@ def call_gemini_image_enhanced(image_bytes: bytes, mime_type: str) -> DetectionR
 
 def call_gemini_video_enhanced(video_content: Any, local_feats: Dict[str, Any]) -> DetectionResult:
     heuristic_score, heuristic_factors = video_heuristic_score_enhanced(local_feats)
+
+    clip_video_score = local_feats.get("clip_video_score")
+
+    if clip_video_score is not None:
+        clip_contribution = (clip_video_score / 100.0) * 20.0
+        heuristic_score += clip_contribution
+        heuristic_factors.append(
+            f"CLIP video semantic AI likelihood: {clip_video_score:.1f}%"
+        )
 
     stats_lines = [
         f"Resolution: {local_feats.get('width')}x{local_feats.get('height')}, "
@@ -1130,6 +1225,9 @@ def analyze_video(req: VideoRequest):
                 temp_path = tmp.name
 
             local_feats = extract_video_features_enhanced(temp_path)
+            clip_video_score = clip_video_ai_probability(temp_path)
+            local_feats["clip_video_score"] = clip_video_score
+
 
             uploaded = client.files.upload(file=temp_path)
             start = time.time()
