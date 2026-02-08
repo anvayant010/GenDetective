@@ -588,6 +588,8 @@ def extract_video_features_enhanced(path: str) -> Dict[str, Any]:
     feats.update(analyze_temporal_consistency(sampled_frames))
     feats.update(analyze_temporal_flicker(sampled_frames))
     feats.update(analyze_face_artifacts(face_regions))
+    feats.update(analyze_motion_acceleration(sampled_frames))
+
 
     feats["sampled_frames"] = len(idxs)
     feats["detected_face_frames"] = sum(1 for fp in face_positions if len(fp) > 0)
@@ -671,6 +673,13 @@ def video_heuristic_score_enhanced(feats: Dict[str, Any]) -> Tuple[float, List[s
         score += 8
     factors.append("Sharpness fluctuates across frames (render instability)")
 
+    accel_std = feats.get("motion_acceleration_std", 0.0)
+
+    if accel_std < 0.05:
+        score += 8
+    factors.append("Motion acceleration appears overly smooth")
+
+
 
     score = max(0.0, min(60.0, score))
     return score, factors
@@ -715,6 +724,32 @@ def clip_video_ai_probability(path: str) -> float:
         return None
 
     return float(np.mean(scores))
+
+def analyze_motion_acceleration(frames: List[np.ndarray]) -> Dict[str, float]:
+    if len(frames) < 4 or not HAS_CV2:
+        return {}
+
+    motion_means = []
+
+    for i in range(len(frames) - 1):
+        flow = cv2.calcOpticalFlowFarneback(
+            (frames[i] * 255).astype("uint8"),
+            (frames[i+1] * 255).astype("uint8"),
+            None,
+            0.5, 3, 15, 3, 5, 1.2, 0,
+        )
+        mag = np.sqrt(flow[..., 0]**2 + flow[..., 1]**2)
+        motion_means.append(mag.mean())
+
+    motion_means = np.array(motion_means)
+
+    acceleration = np.diff(motion_means)
+
+    return {
+        "motion_mean": float(motion_means.mean()),
+        "motion_acceleration_std": float(acceleration.std()) if len(acceleration) else 0.0,
+    }
+
 
 
 # PROMPTS
