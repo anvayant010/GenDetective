@@ -57,7 +57,7 @@ function createRipple(element, event) {
     height: ${size}px;
     top: ${y}px;
     left: ${x}px;
-    background: rgba(59, 130, 246, 0.3);
+    background: rgba(79, 70, 229, 0.3);
     border-radius: 50%;
     transform: scale(0);
     animation: ripple-effect 0.6s ease-out;
@@ -119,8 +119,8 @@ function setupFileUpload(input, uploadZone, previewContainer, preview, removeBtn
 
   uploadZone.addEventListener('dragover', (e) => {
     e.preventDefault();
-    uploadZone.style.borderColor = 'rgba(59, 130, 246, 0.6)';
-    uploadZone.style.background = 'rgba(59, 130, 246, 0.05)';
+    uploadZone.style.borderColor = 'rgba(79, 70, 229, 0.6)';
+    uploadZone.style.background = 'rgba(79, 70, 229, 0.05)';
   });
 
   uploadZone.addEventListener('dragleave', () => {
@@ -343,9 +343,41 @@ function hideLoading() {
   }, 300);
 }
 
+// ==================== LAYOUT SWITCHING ====================
+function enableSplitView() {
+  const container = document.querySelector('.container');
+  const mainWrapper = document.querySelector('.main-content-wrapper');
+  const rightPanel = $('right-panel');
+  
+  container.classList.add('expanded');
+  
+  mainWrapper.classList.add('split-view');
+  
+  rightPanel.classList.remove('hidden');
+  setTimeout(() => {
+    rightPanel.classList.add('visible');
+  }, 50);
+}
+
+function disableSplitView() {
+  const container = document.querySelector('.container');
+  const mainWrapper = document.querySelector('.main-content-wrapper');
+  const rightPanel = $('right-panel');
+  
+  rightPanel.classList.remove('visible');
+  
+  setTimeout(() => {
+    rightPanel.classList.add('hidden');
+    
+    mainWrapper.classList.remove('split-view');
+    
+    
+    container.classList.remove('expanded');
+  }, 300);
+}
+
 // ==================== RESULTS DISPLAY ====================
 function displayResults(data) {
-  const result = $('result');
   const classificationText = $('classification-text');
   const classificationBadge = $('classification-badge');
   const confidenceValue = $('confidence-value');
@@ -357,9 +389,9 @@ function displayResults(data) {
   classificationText.textContent = data.classification || 'Unknown';
   
   if (data.classification.toLowerCase().includes('ai')) {
-    classificationBadge.style.background = 'linear-gradient(135deg, #8b5cf6, #ec4899)';
+    classificationBadge.style.background = 'linear-gradient(135deg, #df2508, #cf3c13)';
   } else {
-    classificationBadge.style.background = 'linear-gradient(135deg, #10b981, #14b8a6)';
+    classificationBadge.style.background = 'linear-gradient(135deg, #10b981, #34d399)';
   }
 
   const confidence = parseFloat(data.confidenceScore) || 0;
@@ -375,15 +407,12 @@ function displayResults(data) {
   const randomTime = (Math.random() * 2 + 0.5).toFixed(1);
   analysisTime.textContent = `Analysis time: ${randomTime}s`;
 
-  result.classList.remove('hidden');
-  
-  setTimeout(() => {
-    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 100);
+  // Enable split view layout
+  enableSplitView();
 
   const closeBtn = $('close-result');
   closeBtn.onclick = () => {
-    result.classList.add('hidden');
+    disableSplitView();
   };
 }
 
@@ -398,7 +427,7 @@ function showNotification(message, type = 'info') {
     top: 20px;
     right: 20px;
     padding: 16px 24px;
-    background: ${type === 'error' ? 'linear-gradient(135deg, #ef4444, #dc2626)' : 'linear-gradient(135deg, #3b82f6, #14b8a6)'};
+    background: ${type === 'error' ? 'linear-gradient(135deg, #ef4444, #dc2626)' : 'linear-gradient(135deg, #4F46E5, #10b981)'};
     color: white;
     border-radius: 12px;
     font-family: 'Manrope', sans-serif;
@@ -417,7 +446,6 @@ function showNotification(message, type = 'info') {
   }, 3000);
 }
 
-// Add notification animations
 const style = document.createElement('style');
 style.textContent = `
   @keyframes slide-in-right {
@@ -468,22 +496,15 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-document.addEventListener('keydown', (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-    e.preventDefault();
-    $('analyze-btn').click();
-  }
-});
-
 const setFavicon = () => {
   const favicon = document.querySelector("link[rel*='icon']") || document.createElement('link');
   favicon.type = 'image/svg+xml';
   favicon.rel = 'icon';
-  favicon.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🌐</text></svg>`;
+  favicon.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'></text></svg>`;
   document.head.appendChild(favicon);
 };
 
 setFavicon();
-console.log('%cGenDetective v2.0', 'font-size: 20px; font-weight: bold; background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;');
-console.log('%cBuilt with cutting-edge design principles', 'font-size: 12px; color: #3b82f6;');
+console.log('%cGenDetective v2.0', 'font-size: 20px; font-weight: bold; background: linear-gradient(135deg, #4F46E5, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;');
+console.log('%cBuilt with cutting-edge design principles', 'font-size: 12px; color: #4F46E5;');
 console.log('%cKeyboard shortcuts: Ctrl/Cmd + Enter to analyze', 'font-size: 11px; color: #888;');

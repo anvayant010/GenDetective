@@ -15,7 +15,30 @@
     <div class="gradient-orb orb-1"></div>
     <div class="gradient-orb orb-2"></div>
     <div class="gradient-orb orb-3"></div>
+    <div class="gradient-orb orb-4"></div>
+    <div class="gradient-orb orb-5"></div>
+    <div class="gradient-orb orb-6"></div>
+    <div class="gradient-orb orb-7"></div>
+    <div class="gradient-orb orb-8"></div>
+    <div class="gradient-orb orb-9"></div>
+    <div class="gradient-orb orb-10"></div>
+    <div class="gradient-orb orb-11"></div>
+    <div class="gradient-orb orb-12"></div>
+    <div class="gradient-orb orb-13"></div>
+    <div class="gradient-orb orb-14"></div>
+    <div class="gradient-orb orb-15"></div>
+    <div class="gradient-orb orb-16"></div>
+    <div class="gradient-orb orb-17"></div>
+    <div class="gradient-orb orb-18"></div>
+    <div class="gradient-orb orb-19"></div>
+    <div class="gradient-orb orb-20"></div>
+    <div class="gradient-orb orb-21"></div>
+    <div class="gradient-orb orb-22"></div>
+    <div class="gradient-orb orb-23"></div>
+    <div class="gradient-orb orb-24"></div>
     <div class="grid-overlay"></div>
+    <div class="noise-overlay"></div>
+    <div class="scan-line"></div>
   </div>
 
   <div class="particles">
@@ -24,6 +47,54 @@
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <div class="stars">
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
   </div>
 
   <div class="container">
@@ -37,23 +108,23 @@
             <circle cx="20" cy="20" r="6" fill="url(#gradient3)"/>
             <defs>
               <linearGradient id="gradient1" x1="5" y1="5" x2="35" y2="35">
-                <stop offset="0%" stop-color="#3b82f6"/>
-                <stop offset="100%" stop-color="#8b5cf6"/>
+                <stop offset="0%" stop-color="#4F46E5"/>
+                <stop offset="100%" stop-color="#10b981"/>
               </linearGradient>
               <linearGradient id="gradient2" x1="5" y1="5" x2="35" y2="35">
-                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.1"/>
-                <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.1"/>
+                <stop offset="0%" stop-color="#4F46E5" stop-opacity="0.1"/>
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0.1"/>
               </linearGradient>
               <linearGradient id="gradient3" x1="14" y1="14" x2="26" y2="26">
-                <stop offset="0%" stop-color="#3b82f6"/>
-                <stop offset="100%" stop-color="#8b5cf6"/>
+                <stop offset="0%" stop-color="#4F46E5"/>
+                <stop offset="100%" stop-color="#10b981"/>
               </linearGradient>
             </defs>
           </svg>
         </div>
         <div class="logo-text">
           <h1 class="logo-title"><span class="logo-capital">G</span>en<span class="logo-capital">D</span>etective</h1>
-          <p class="logo-subtitle">AI Content Detector</p>
+          <p class="logo-subtitle">Detect AI Generated content with a click</p>
         </div>
       </div>
       
@@ -66,156 +137,218 @@
       </div>
     </header>
 
-    <!-- Tab Navigation -->
-    <div class="tabs-wrapper">
-      <div class="tabs">
-        <button class="tab active" data-mode="image">
-          <div class="tab-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
-              <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
-              <path d="M21 15L16 10L7 19" stroke="currentColor" stroke-width="2"/>
-            </svg>
-          </div>
-          <span>Image Analysis</span>
-          <div class="tab-glow"></div>
-        </button>
-        
-        <button class="tab" data-mode="video">
-          <div class="tab-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
-              <path d="M10 9L15 12L10 15V9Z" fill="currentColor"/>
-            </svg>
-          </div>
-          <span>Video Scan</span>
-          <div class="tab-glow"></div>
-        </button>
-        
-        <button class="tab" data-mode="text">
-          <div class="tab-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M4 7H20M4 12H20M4 17H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <span>Text Detection</span>
-          <div class="tab-glow"></div>
-        </button>
-      </div>
-      <div class="tab-indicator"></div>
-    </div>
-
-    <div class="panels-container">
+    <!-- Main Content Wrapper -->
+    <div class="main-content-wrapper">
       
-      <!-- IMAGE PANEL -->
-      <div class="panel active" id="panel-image">
-        <div class="upload-zone" id="image-upload-zone">
-          <input type="file" id="image-input" accept="image/*" hidden />
-          <div class="upload-content">
-            <div class="upload-icon">
-              <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                <circle cx="32" cy="32" r="30" stroke="url(#uploadGrad)" stroke-width="2" stroke-dasharray="4 4"/>
-                <path d="M32 20V44M20 32H44" stroke="url(#uploadGrad)" stroke-width="3" stroke-linecap="round"/>
-                <defs>
-                  <linearGradient id="uploadGrad" x1="0" y1="0" x2="64" y2="64">
-                    <stop offset="0%" stop-color="#3b82f6"/>
-                    <stop offset="100%" stop-color="#8b5cf6"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <h3 class="upload-title">Drop image here or click to upload</h3>
-            <p class="upload-subtitle">Supports: JPG, PNG, WEBP • Max size: 10MB</p>
-            <button class="browse-btn" onclick="document.getElementById('image-input').click()">
-              Browse Files
+      <!-- Left Panel-->
+      <div class="left-panel" id="left-panel">
+        
+        <div class="tabs-wrapper">
+          <div class="tabs">
+            <button class="tab active" data-mode="image">
+              <div class="tab-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
+                  <path d="M21 15L16 10L7 19" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+              <span>Image Analysis</span>
+              <div class="tab-glow"></div>
+            </button>
+            
+            <button class="tab" data-mode="video">
+              <div class="tab-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                  <path d="M10 9L15 12L10 15V9Z" fill="currentColor"/>
+                </svg>
+              </div>
+              <span>Video Scan</span>
+              <div class="tab-glow"></div>
+            </button>
+            
+            <button class="tab" data-mode="text">
+              <div class="tab-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M4 7H20M4 12H20M4 17H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <span>Text Detection</span>
+              <div class="tab-glow"></div>
             </button>
           </div>
+          <div class="tab-indicator"></div>
         </div>
-        <div class="preview-container hidden" id="image-preview-container">
-          <img id="image-preview" class="preview-media" alt="Preview"/>
-          <button class="remove-btn" id="remove-image">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+
+        <div class="panels-container">
+          
+          <!-- IMAGE PANEL -->
+          <div class="panel active" id="panel-image">
+            <div class="upload-zone" id="image-upload-zone">
+              <input type="file" id="image-input" accept="image/*" hidden />
+              <div class="upload-content">
+                <div class="upload-icon">
+                  <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                    <circle cx="32" cy="32" r="30" stroke="url(#uploadGrad)" stroke-width="2" stroke-dasharray="4 4"/>
+                    <path d="M32 20V44M20 32H44" stroke="url(#uploadGrad)" stroke-width="3" stroke-linecap="round"/>
+                    <defs>
+                      <linearGradient id="uploadGrad" x1="0" y1="0" x2="64" y2="64">
+                        <stop offset="0%" stop-color="#4F46E5"/>
+                        <stop offset="100%" stop-color="#10b981"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+                <h3 class="upload-title">Drop image here or click to upload</h3>
+                <p class="upload-subtitle">Supports: JPG, PNG, WEBP • Max size: 10MB</p>
+                <button class="browse-btn" onclick="document.getElementById('image-input').click()">
+                  Browse Files
+                </button>
+              </div>
+            </div>
+            <div class="preview-container hidden" id="image-preview-container">
+              <img id="image-preview" class="preview-media" alt="Preview"/>
+              <button class="remove-btn" id="remove-image">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <div class="preview-overlay">
+                <div class="file-info">
+                  <span id="image-filename">image.png</span>
+                  <span id="image-size">2.4 MB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIDEO PANEL -->
+          <div class="panel" id="panel-video">
+            <div class="upload-zone" id="video-upload-zone">
+              <input type="file" id="video-input" accept="video/*" hidden />
+              <div class="upload-content">
+                <div class="upload-icon">
+                  <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                    <circle cx="32" cy="32" r="30" stroke="url(#uploadGrad2)" stroke-width="2" stroke-dasharray="4 4"/>
+                    <path d="M28 22L42 32L28 42V22Z" fill="url(#uploadGrad2)"/>
+                    <defs>
+                      <linearGradient id="uploadGrad2" x1="0" y1="0" x2="64" y2="64">
+                        <stop offset="0%" stop-color="#4F46E5"/>
+                        <stop offset="100%" stop-color="#10b981"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+                <h3 class="upload-title">Drop video here or click to upload</h3>
+                <p class="upload-subtitle">Supports: MP4, WEBM, MOV • Max size: 50MB</p>
+                <button class="browse-btn" onclick="document.getElementById('video-input').click()">
+                  Browse Files
+                </button>
+              </div>
+            </div>
+            <div class="preview-container hidden" id="video-preview-container">
+              <video id="video-preview" controls class="preview-media"></video>
+              <button class="remove-btn" id="remove-video">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <div class="preview-overlay">
+                <div class="file-info">
+                  <span id="video-filename">video.mp4</span>
+                  <span id="video-size">15.2 MB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEXT PANEL -->
+          <div class="panel" id="panel-text">
+            <div class="text-editor">
+              <div class="editor-toolbar">
+                <div class="char-counter">
+                  <span id="char-count">0</span> characters
+                </div>
+                <button class="clear-btn" id="clear-text">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M13 3L3 13M3 3L13 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  Clear
+                </button>
+              </div>
+              <textarea id="text-input" placeholder="Paste or type text content here for AI-generation analysis..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <button id="analyze-btn" class="analyze-btn">
+          <span class="btn-content">
+            <svg class="btn-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="10" cy="10" r="3" fill="currentColor"/>
             </svg>
-          </button>
-          <div class="preview-overlay">
-            <div class="file-info">
-              <span id="image-filename">image.png</span>
-              <span id="image-size">2.4 MB</span>
+            <span class="btn-text">Analyze Content</span>
+          </span>
+          <div class="btn-glow"></div>
+        </button>
+
+      </div>
+
+      <!-- Right Panel-->
+      <div class="right-panel hidden" id="right-panel">
+        <div id="result" class="result">
+          <div class="result-header">
+            <h3>Detection Results</h3>
+            <button class="close-result" id="close-result">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="result-body">
+            <div class="classification-badge" id="classification-badge">
+              <div class="badge-icon">⚡</div>
+              <span id="classification-text">AI Generated</span>
+            </div>
+            
+            <div class="confidence-section">
+              <div class="confidence-label">
+                <span>Confidence Score</span>
+                <span class="confidence-value" id="confidence-value">0%</span>
+              </div>
+              <div class="confidence-bar">
+                <div class="confidence-fill" id="confidence-fill"></div>
+                <div class="confidence-marker" id="confidence-marker"></div>
+              </div>
+            </div>
+
+            <div class="justification-section">
+              <h4>Analysis Details</h4>
+              <p id="justification-text"></p>
+            </div>
+
+            <div class="result-meta">
+              <div class="meta-item">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M8 4V8L11 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <span id="analysis-time">Analysis time: 1.2s</span>
+              </div>
+              <div class="meta-item">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 2L10 6L14 6.5L11 9.5L12 14L8 11.5L4 14L5 9.5L2 6.5L6 6L8 2Z" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+                <span id="model-version">Model: v2.0</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- VIDEO PANEL -->
-      <div class="panel" id="panel-video">
-        <div class="upload-zone" id="video-upload-zone">
-          <input type="file" id="video-input" accept="video/*" hidden />
-          <div class="upload-content">
-            <div class="upload-icon">
-              <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                <circle cx="32" cy="32" r="30" stroke="url(#uploadGrad2)" stroke-width="2" stroke-dasharray="4 4"/>
-                <path d="M28 22L42 32L28 42V22Z" fill="url(#uploadGrad2)"/>
-                <defs>
-                  <linearGradient id="uploadGrad2" x1="0" y1="0" x2="64" y2="64">
-                    <stop offset="0%" stop-color="#3b82f6"/>
-                    <stop offset="100%" stop-color="#8b5cf6"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <h3 class="upload-title">Drop video here or click to upload</h3>
-            <p class="upload-subtitle">Supports: MP4, WEBM, MOV • Max size: 50MB</p>
-            <button class="browse-btn" onclick="document.getElementById('video-input').click()">
-              Browse Files
-            </button>
-          </div>
-        </div>
-        <div class="preview-container hidden" id="video-preview-container">
-          <video id="video-preview" controls class="preview-media"></video>
-          <button class="remove-btn" id="remove-video">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </button>
-          <div class="preview-overlay">
-            <div class="file-info">
-              <span id="video-filename">video.mp4</span>
-              <span id="video-size">15.2 MB</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TEXT PANEL -->
-      <div class="panel" id="panel-text">
-        <div class="text-editor">
-          <div class="editor-toolbar">
-            <div class="char-counter">
-              <span id="char-count">0</span> characters
-            </div>
-            <button class="clear-btn" id="clear-text">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M13 3L3 13M3 3L13 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              Clear
-            </button>
-          </div>
-          <textarea id="text-input" placeholder="Paste or type text content here for AI-generation analysis..."></textarea>
-        </div>
-      </div>
     </div>
-
-    <button id="analyze-btn" class="analyze-btn">
-      <span class="btn-content">
-        <svg class="btn-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="10" cy="10" r="3" fill="currentColor"/>
-        </svg>
-        <span class="btn-text">Analyze Content</span>
-      </span>
-      <div class="btn-glow"></div>
-    </button>
 
     <div class="loading-overlay hidden" id="loading">
       <div class="loading-content">
@@ -228,57 +361,6 @@
         <p class="loading-subtitle">Running AI detection algorithms...</p>
         <div class="progress-bar">
           <div class="progress-fill" id="progress"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Result Card -->
-    <div id="result" class="result hidden">
-      <div class="result-header">
-        <h3>Detection Results</h3>
-        <button class="close-result" id="close-result">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-      
-      <div class="result-body">
-        <div class="classification-badge" id="classification-badge">
-          <div class="badge-icon">⚡</div>
-          <span id="classification-text">AI Generated</span>
-        </div>
-        
-        <div class="confidence-section">
-          <div class="confidence-label">
-            <span>Confidence Score</span>
-            <span class="confidence-value" id="confidence-value">0%</span>
-          </div>
-          <div class="confidence-bar">
-            <div class="confidence-fill" id="confidence-fill"></div>
-            <div class="confidence-marker" id="confidence-marker"></div>
-          </div>
-        </div>
-
-        <div class="justification-section">
-          <h4>Analysis Details</h4>
-          <p id="justification-text"></p>
-        </div>
-
-        <div class="result-meta">
-          <div class="meta-item">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M8 4V8L11 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-            <span id="analysis-time">Analysis time: 1.2s</span>
-          </div>
-          <div class="meta-item">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 2L10 6L14 6.5L11 9.5L12 14L8 11.5L4 14L5 9.5L2 6.5L6 6L8 2Z" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-            <span id="model-version">Model: v2.0</span>
-          </div>
         </div>
       </div>
     </div>
