@@ -28,6 +28,19 @@
     font-family: "Inter", system-ui, sans-serif;
     background: radial-gradient(circle at top left, #bbf7d0, #ecfdf5 60%);
   }
+  .api-notice {
+  margin-top: 15px;
+  padding: 10px 14px;
+  font-size: 12px;
+  text-align: center;
+  background: rgba(255, 193,  7, 0.15);
+  border-left: 4px solid #ffc107;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  color: #2b2203;
+  line-height: 1.4;
+}
+
 
   .card {
     background: #ffffff;
@@ -331,6 +344,10 @@
         </div>
       </button>
     </div>
+    <div class="api-notice">
+  GenDetective currently uses the Gemini API (Free Tier). 
+  Temporary rate limits may apply. If analysis fails, please wait a moment and try again.
+  </div>
 
     <div id="result" class="result-box" style="display: none"></div>
     <div id="error" class="error"></div>

@@ -496,13 +496,7 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-const setFavicon = () => {
-  const favicon = document.querySelector("link[rel*='icon']") || document.createElement('link');
-  favicon.type = 'image/svg+xml';
-  favicon.rel = 'icon';
-  favicon.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'></text></svg>`;
-  document.head.appendChild(favicon);
-};
+
 
 setFavicon();
 console.log('%cGenDetective v2.0', 'font-size: 20px; font-weight: bold; background: linear-gradient(135deg, #4F46E5, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;');

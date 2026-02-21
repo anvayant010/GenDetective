@@ -301,6 +301,21 @@ body {
     transform: translate(-80px, 80px) scale(0.9); 
   }
 }
+.api-notice-floating {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 300px;
+  padding: 10px 14px;
+  font-size: 14px;
+  background-color: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid #ffc107;
+  border-radius: 8px;
+  color: #a3a3a3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+}
 
 .grid-overlay {
   position: absolute;
