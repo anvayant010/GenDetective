@@ -2,35 +2,27 @@
 GenDetective is a multimodal AI-content detection system designed as a Chrome browser extension backed by an integrated FastAPI backend. It detects whether images, videos, or text are AI-generated using a hybrid forensic approach that combines:
 - Statistical and signal based analysis
 - ML based Classification
+- CLIP semantic modeling  
 - LLM (Gemini) assisted multimodal reasoning
 This integration and combination improves detection robustness, confidence calibration, and interpretability compared to single-method detectors and models.
 
 
 ## Key Features
-### 🖼️Image Detection
+### Image Detection
 - EXIF Metadata Inspection
 - Frequency spectrum & noise analysis
 - Gemini-assisted forensic reasoning using structured prompts
 
-### 🎥Video Detection
+### Video Detection
 - Temporal consistency analysis
 - Face symmetry, jitter, and texture analysis
 - Frame-level forensic feature extraction
 - Gemini multimodal reasoning on video segments
 
-### 📝Text Detection
+### Text Detection
 - Locally trained ML classifier
 - Logistic regression for fast & interpretable inference
 - No external API required for text detection
-
-### 🔐Logs
-Each entry is documented in an analysis_logs.json file which is created after using the extension for the first time.
-For each entry following parameters are present in the logs:
-- type
-- classification
-- confidence score
-- justification
-- forensic factors
 
 ## System Architecture
 <p align="center">
@@ -38,7 +30,7 @@ For each entry following parameters are present in the logs:
 </p>
 
 ## Tech Stack
-### Frontend(Extension)
+### Frontend(Extension + Dashboard)
 - HTML, CSS, Javascript
 - Chrome Extension APIs
 
@@ -47,14 +39,16 @@ For each entry following parameters are present in the logs:
 - Python
 - NumPy, SciPy - statistical analysis
 - OpenCV - image & video forensics
+- Transformers (CLIP)
 - Joblib - ML model loading
 
 ### AI/ML
 - Scikit-learn, Colab - model building and training
 - Gemini API - multimodal reasoning
+- CLIP - Vision-Language Model
 
 
-## ⚙️Setup & Installation
+## Setup & Installation
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/your-username/GenDetective.git
@@ -91,16 +85,16 @@ http://127.0.0.1:8000
 
 ### The extension is now ready to use 🎉
 
-## 🖼️Extension Interface
+### 4. Load Web Dashboard
+GenDetective includes a modern web dashboard connected to the same backend. This performs all the function of that of the extension just in the web format.
+1. Run the `index.html` file in the dashboard folder
+2. The dashboard will run on personal localhost
+   
+
+## Extension Interface
 <p align="center">
   <img src="assets/user_interface.png" alt="GenDetective Chrome Extension" width="450">
 </p>
-
-## Future Enhancements
-- Cloud deployment of backend
-- Real-time webpage scanning
-- Model fine-tuning with newer datasets
-- Chrome Web Store publication
 
 ## Use Cases
 - Fake news & misinformation detection
